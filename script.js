@@ -1,6 +1,19 @@
-var ctx = document.querySelector('canvas').getContext('2d')
-ctx.canvas.width = window.innerWidth
-ctx.canvas.height = window.innerHeight
+// var ctx = document.querySelector('canvas').getContext('2d')
+var canvas = document.querySelector('canvas');
+var ctx = canvas.getContext('2d');
+ctx.globalAlpha = 0.1
+canvas.width = window.innerWidth
+canvas.height = window.innerHeight
+var img = new Image();
+
+img.onload = function() {
+   // ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+   draw();
+};
+img.src = './background.jpg';
+
+
+
 
 var sparks = []
 var fireworks = []
@@ -10,12 +23,27 @@ var i = 20; while(i--) {
    )
 }
 
+function draw() {
+    // 清空画布
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // 绘制图片使其铺满整个屏幕
+    ctx.drawImage(img, 0, 0, window.innerWidth, window.innerHeight);
+   //  render();
+    
+    // 请求下一帧动画
+   //  requestAnimationFrame(draw);
+}
+
 render()
 
 function render() {
+   // draw();
+   // setTimeout(draw, 1000/60)
    setTimeout(render, 1000/60)
-   ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-   ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+   // ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+   // ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+   draw()
    for(var firework of fireworks) {
       if(firework.dead) continue
       firework.move()
@@ -35,6 +63,7 @@ function render() {
 function Spark(x, y, color) {
    this.x = x
    this.y = y
+//    this.dir = Math.PI / 2
    this.dir = Math.random() * (Math.PI*2)
    this.dead = false
    this.color = color
